@@ -9,6 +9,7 @@ class CSPLogger {
 
 
         const body = {
+            applicationName: this.applicationName,
             datetime,
             category,
             message
@@ -29,6 +30,7 @@ class CSPLogger {
         //show details for debugging
         return {
             payload: 'debugging app',
+            applicationName: this.applicationName,
             category,
             message
         }
@@ -38,6 +40,7 @@ class CSPLogger {
         //show styled info
         return {
             payload: 'showing app info',
+            applicationName: this.applicationName,
             category,
             message
         }
@@ -47,6 +50,7 @@ class CSPLogger {
         //show styled info
         return {
             payload: 'show app warning',
+            applicationName: this.applicationName,
             category,
             message
         }
@@ -58,5 +62,8 @@ class CSPLogger {
 
 
 module.exports = CSPLogger;
+
+
+
 
 
