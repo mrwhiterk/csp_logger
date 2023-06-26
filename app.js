@@ -1,17 +1,17 @@
 "use strict";
 
+const logLevels = {'debug': 0, 'info': 1, 'warning': 2, 'error': 3};
+
 class CSPLogger {
     constructor (applicationName) {
         this.applicationName = applicationName
     }
 
-    log (datetime, category, message, file, line) {
-
-
-        const body = {
+    createDebugItem (message, file, line) {
+        let body = {
             applicationName: this.applicationName,
-            datetime,
-            category,
+            datetime: new Date().toISOString(),
+            logLevel: logLevels.debug,
             message
         }
 
@@ -23,47 +23,72 @@ class CSPLogger {
             body.line = line;
         }
 
-        return body;
+        return this.jsonConvert(body);
     }
 
-    debug (category, message) {
-        //show details for debugging
-        return {
-            payload: 'debugging app',
-            applicationName: this.applicationName,
-            category,
-            message
-        }
-    }
-
-    info (category, message) {
-        //show styled info
-        return {
+    createInfoItem (message, file, line) {
+        let body = {
             payload: 'showing app info',
             applicationName: this.applicationName,
-            category,
+            datetime: new Date().toISOString(),
+            logLevel: logLevels.info,
             message
         }
+
+        if (file) {
+            body.file = file;
+        }
+
+        if (line) {
+            body.line = line;
+        }
+
+        return this.jsonConvert(body);
     }
 
-    warning (category, message) {
-        //show styled info
-        return {
-            payload: 'show app warning',
+    createWarningItem (message, file, line) {
+        let body = {
             applicationName: this.applicationName,
-            category,
+            datetime: new Date().toISOString(),
+            logLevel: logLevels.warning,
             message
         }
+
+        if (file) {
+            body.file = file;
+        }
+
+        if (line) {
+            body.line = line;
+        }
+
+        return this.jsonConvert(body);
     }
 
+    createErrorItem (message, file, line) {
+        const body = {
+            applicationName: this.applicationName,
+            datetime: new Date().toISOString(),
+            logLevel: logLevels.error,
+            message
+        }
 
+        if (file) {
+            body.file = file;
+        }
+
+        if (line) {
+            body.line = line;
+        }
+
+        return this.jsonConvert(body);
+    }
+
+    jsonConvert (obj) {
+        return '\n' + JSON.stringify(obj, null, 2).replace(/\n/g, "");
+    }
 }
 
 
 
 module.exports = CSPLogger;
-
-
-
-
-
