@@ -23,7 +23,7 @@ class CSPLogger {
             body.line = line;
         }
 
-        return this.jsonConvert(body);
+        return this.convert(body);
     }
 
     createInfoItem (message, file, line) {
@@ -43,7 +43,7 @@ class CSPLogger {
             body.line = line;
         }
 
-        return this.jsonConvert(body);
+        return this.convert(body);
     }
 
     createWarningItem (message, file, line) {
@@ -62,7 +62,7 @@ class CSPLogger {
             body.line = line;
         }
 
-        return this.jsonConvert(body);
+        return this.convert(body);
     }
 
     createErrorItem (message, file, line) {
@@ -81,13 +81,32 @@ class CSPLogger {
             body.line = line;
         }
 
-        return this.jsonConvert(body);
+        return this.convert(body);
     }
 
     jsonConvert (obj) {
         return '\n' + JSON.stringify(obj, null, 2).replace(/\n/g, "");
     }
+
+    convert (obj) {
+        let result = '';
+
+        for (const key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                result += obj[key] + '|';
+            } else {
+                result += '|';
+            }
+        }
+
+        result = result.slice(0, -1);
+
+        return result;
+    }
 }
+
+var test = new CSPLogger("test logger")
+var result = test.createDebugItem("some message", 1, 2)
 
 
 
